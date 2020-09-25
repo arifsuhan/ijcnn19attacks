@@ -1,5 +1,4 @@
-# Due to some runtime issue because of Version
-replaced or removed some codes. Please check here:
+## Due to some runtime issue because of Version replaced or removed some codes. Please check here:
 
 ### create directory for dataset and model 
 ```
