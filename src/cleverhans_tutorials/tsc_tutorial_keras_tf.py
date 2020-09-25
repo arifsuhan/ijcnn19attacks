@@ -8,7 +8,7 @@ import sklearn
 import tensorflow as tf
 from tensorflow.python.platform import flags
 import numpy as np
-import keras
+from tensorflow import keras
 from keras import backend
 import pandas as pd
 
@@ -102,7 +102,7 @@ def add_labels_to_adv_test_set(dataset_dict,dataset_name, adv_data_dir,original_
 def tsc_tutorial(attack_method='fgsm',batch_size=BATCH_SIZE,
                  dataset_name='Adiac',eps=0.1,attack_on='train'):
 
-    keras.layers.core.K.set_learning_phase(0)
+    tf.keras.backend.set_learning_phase(False)
 
     # Object used to keep track of (and return) key accuracies
     report = AccuracyReport()
@@ -110,20 +110,20 @@ def tsc_tutorial(attack_method='fgsm',batch_size=BATCH_SIZE,
     # Set TF random seed to improve reproducibility
     tf.set_random_seed(1234)
 
-    if not hasattr(backend, "tf"):
+    if not hasattr(backend, "tensorflow_backend"):
         raise RuntimeError("This tutorial requires keras to be configured"
                            " to use the TensorFlow backend.")
 
-    if keras.backend.image_dim_ordering() != 'tf':
-        keras.backend.set_image_dim_ordering('tf')
+    if keras.backend.image_data_format() != 'channels_last':
+        keras.backend.set_image_data_format('channels_last')
         print("INFO: '~/.keras/keras.json' sets 'image_dim_ordering' to "
               "'th', temporarily setting to 'tf'")
 
     # Create TF session and set as Keras backend session
-    sess = tf.Session()
+    sess = tf.compat.v1.Session()
     keras.backend.set_session(sess)
 
-    root_dir = '/b/home/uha/hfawaz-datas/dl-tsc/'
+    root_dir = 'data/dl-tsc/'
 
     # dataset_name = 'Adiac'
     archive_name = 'TSC'
@@ -136,6 +136,7 @@ def tsc_tutorial(attack_method='fgsm',batch_size=BATCH_SIZE,
                    '/eps-'+str(eps)+'/'
 
     if os.path.exists(adv_data_dir+dataset_name+'-adv'):
+        print(adv_data_dir+dataset_name+'-adv')
         print('Already_done:',dataset_name)
         return
     else:
@@ -252,25 +253,26 @@ def main(argv=None,attack_method='fgsm'):
     flags.DEFINE_integer('batch_size', BATCH_SIZE, 'Size of training batches')
 
     # full datasets
-    dataset_names = ['50words', 'Adiac', 'ArrowHead', 'Beef', 'BeetleFly', 'BirdChicken', 'Car', 'CBF',
-                     'ChlorineConcentration', 'CinC_ECG_torso', 'Coffee',
-                     'Computers', 'Cricket_X', 'Cricket_Y', 'Cricket_Z', 'DiatomSizeReduction',
-                     'DistalPhalanxOutlineAgeGroup', 'DistalPhalanxOutlineCorrect', 'DistalPhalanxTW',
-                     'Earthquakes', 'ECG200', 'ECG5000', 'ECGFiveDays', 'ElectricDevices', 'FaceAll', 'FaceFour',
-                     'FacesUCR', 'FISH', 'FordA', 'FordB', 'Gun_Point', 'Ham', 'HandOutlines',
-                     'Haptics', 'Herring', 'InlineSkate', 'InsectWingbeatSound', 'ItalyPowerDemand',
-                     'LargeKitchenAppliances', 'Lighting2', 'Lighting7', 'MALLAT', 'Meat', 'MedicalImages',
-                     'MiddlePhalanxOutlineAgeGroup', 'MiddlePhalanxOutlineCorrect', 'MiddlePhalanxTW', 'MoteStrain',
-                     'NonInvasiveFatalECG_Thorax1', 'NonInvasiveFatalECG_Thorax2', 'OliveOil',
-                     'OSULeaf', 'PhalangesOutlinesCorrect', 'Phoneme', 'Plane', 'ProximalPhalanxOutlineAgeGroup',
-                     'ProximalPhalanxOutlineCorrect', 'ProximalPhalanxTW', 'RefrigerationDevices',
-                     'ScreenType', 'ShapeletSim', 'ShapesAll', 'SmallKitchenAppliances', 'SonyAIBORobotSurface',
-                     'SonyAIBORobotSurfaceII', 'StarLightCurves', 'Strawberry', 'SwedishLeaf', 'Symbols',
-                     'synthetic_control', 'ToeSegmentation1', 'ToeSegmentation2', 'Trace', 'TwoLeadECG', 'Two_Patterns',
-                     'UWaveGestureLibraryAll', 'uWaveGestureLibrary_X', 'uWaveGestureLibrary_Y',
-                     'uWaveGestureLibrary_Z', 'wafer', 'Wine', 'WordsSynonyms', 'Worms', 'WormsTwoClass', 'yoga']
+    # dataset_names = ['50words', 'Adiac', 'ArrowHead', 'Beef', 'BeetleFly', 'BirdChicken', 'Car', 'CBF',
+    #                  'ChlorineConcentration', 'CinC_ECG_torso', 'Coffee',
+    #                  'Computers', 'Cricket_X', 'Cricket_Y', 'Cricket_Z', 'DiatomSizeReduction',
+    #                  'DistalPhalanxOutlineAgeGroup', 'DistalPhalanxOutlineCorrect', 'DistalPhalanxTW',
+    #                  'Earthquakes', 'ECG200', 'ECG5000', 'ECGFiveDays', 'ElectricDevices', 'FaceAll', 'FaceFour',
+    #                  'FacesUCR', 'FISH', 'FordA', 'FordB', 'Gun_Point', 'Ham', 'HandOutlines',
+    #                  'Haptics', 'Herring', 'InlineSkate', 'InsectWingbeatSound', 'ItalyPowerDemand',
+    #                  'LargeKitchenAppliances', 'Lighting2', 'Lighting7', 'MALLAT', 'Meat', 'MedicalImages',
+    #                  'MiddlePhalanxOutlineAgeGroup', 'MiddlePhalanxOutlineCorrect', 'MiddlePhalanxTW', 'MoteStrain',
+    #                  'NonInvasiveFatalECG_Thorax1', 'NonInvasiveFatalECG_Thorax2', 'OliveOil',
+    #                  'OSULeaf', 'PhalangesOutlinesCorrect', 'Phoneme', 'Plane', 'ProximalPhalanxOutlineAgeGroup',
+    #                  'ProximalPhalanxOutlineCorrect', 'ProximalPhalanxTW', 'RefrigerationDevices',
+    #                  'ScreenType', 'ShapeletSim', 'ShapesAll', 'SmallKitchenAppliances', 'SonyAIBORobotSurface',
+    #                  'SonyAIBORobotSurfaceII', 'StarLightCurves', 'Strawberry', 'SwedishLeaf', 'Symbols',
+    #                  'synthetic_control', 'ToeSegmentation1', 'ToeSegmentation2', 'Trace', 'TwoLeadECG', 'Two_Patterns',
+    #                  'UWaveGestureLibraryAll', 'uWaveGestureLibrary_X', 'uWaveGestureLibrary_Y',
+    #                  'uWaveGestureLibrary_Z', 'wafer', 'Wine', 'WordsSynonyms', 'Worms', 'WormsTwoClass', 'yoga']
 
     # dataset_names = ['Coffee']
+    dataset_names = ['HAR']
 
     # epsilons = np.arange(start=0.0,stop=2.0,step=0.025,dtype=np.float32)
     epsilons = [0.1]

@@ -3,16 +3,16 @@ Model construction utilities based on keras
 """
 import warnings
 from distutils.version import LooseVersion
-import keras
-from keras.models import Sequential
-from keras.layers import Dense, Activation, Flatten
+from tensorflow import keras
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Activation, Flatten
 
 from .model import Model, NoSuchLayerError
 
 if LooseVersion(keras.__version__) >= LooseVersion('2.0.0'):
-  from keras.layers import Conv2D
+  from tensorflow.keras.layers import Conv2D
 else:
-  from keras.layers import Convolution2D
+  from tensorflow.keras.layers import Convolution2D
 
 
 def conv_2d(filters, kernel_shape, strides, padding, input_shape=None):
@@ -197,7 +197,7 @@ class KerasModelWrapper(Model):
     :return: A dictionary mapping layer names to the symbolic
              representation of their output.
     """
-    from keras.models import Model as KerasModel
+    from tensorflow.keras.models import Model as KerasModel
 
     if self.keras_model is None:
       # Get the input layer
