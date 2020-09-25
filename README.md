@@ -1,20 +1,6 @@
-## Due to some runtime issue because of Version replaced or removed some codes. Please check here:
+## For version upgrade, user may face various issue. That's why some codes are replaced or some are removed.
 
-### create directory for dataset and model 
-```
-import os
-dataset_path = "data/dl-tsc/archives/TSC/HAR/"
-pretrain_model_path = "data/dl-tsc/results/resnet/TSC/HAR/"
-
-os.makedirs(pretrain_model_path)
-```
-
-
-### ijcnn19attacks/src/main.py
-```
-root_dir = 'data/dl-tsc'
-archive_name = 'TSC'
-```
+## Issues
 
 ### ijcnn19attacks/src/cleverhans_tutorials/tsc_tutorial_keras_tf.py
 ***import settings***
@@ -64,8 +50,26 @@ before: import keras.*
 after: import tensorflow.keras.*
 ```
 
+## Setup 
+
 ### env
 ```
 !pip install tensorflow==1.15.0
 !pip install keras==2.2.4
+```
+
+### create directory for dataset and model 
+```
+import os
+dataset_path = "data/dl-tsc/archives/TSC/HAR/"
+pretrain_model_path = "data/dl-tsc/results/resnet/TSC/HAR/"
+
+os.makedirs(pretrain_model_path)
+```
+
+
+### ijcnn19attacks/src/main.py
+```
+root_dir = 'data/dl-tsc'
+archive_name = 'TSC'
 ```
