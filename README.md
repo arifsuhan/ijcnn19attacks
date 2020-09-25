@@ -70,9 +70,6 @@ after: import tensorflow.keras.*
 !pip install keras==2.2.4
 ```
 
-
-
-# Adversarial Attacks on Deep Neural Networks for Time Series Classification
 # Adversarial Attacks on Deep Neural Networks for Time Series Classification
 This is the companion repository for our paper also available on [ArXiv](https://arxiv.org/abs/1903.07054) titled "Adversarial Attacks on Deep Neural Networks for Time Series Classification". 
 This paper has been accepted at the [IEEE International Joint Conference on Neural Networks (IJCNN) 2019](https://www.ijcnn.org/). 
