@@ -97,6 +97,7 @@ def add_labels_to_adv_test_set(dataset_dict,dataset_name, adv_data_dir,original_
     test_set = np.zeros((original_y.shape[0],x_test_perturbed.shape[1]+1),dtype=np.float64)
     test_set[:,0] = original_y
     test_set[:,1:] = x_test_perturbed
+    print("add_labels_to_adv_test_set function",test_set.shape)
     np.savetxt(adv_data_dir+dataset_name+'-adv',test_set,delimiter=',')
 
 def tsc_tutorial(attack_method='fgsm',batch_size=BATCH_SIZE,
@@ -234,10 +235,10 @@ def tsc_tutorial(attack_method='fgsm',batch_size=BATCH_SIZE,
 
 
     create_directory(adv_data_dir)
-
+    print("tsc_tutorial function",test_set.shape)
     np.savetxt(adv_data_dir+dataset_name+'-adv',test_set, delimiter=',')
 
-    add_labels_to_adv_test_set(dataset_dict, dataset_name, adv_data_dir,original_y)
+    # add_labels_to_adv_test_set(dataset_dict, dataset_name, adv_data_dir,original_y)
 
     res = pd.DataFrame(data = np.zeros((1,3),dtype=np.float), index=[0],
             columns=['dataset_name','ori_acc','adv_acc'])
@@ -271,8 +272,8 @@ def main(argv=None,attack_method='fgsm'):
     #                  'UWaveGestureLibraryAll', 'uWaveGestureLibrary_X', 'uWaveGestureLibrary_Y',
     #                  'uWaveGestureLibrary_Z', 'wafer', 'Wine', 'WordsSynonyms', 'Worms', 'WormsTwoClass', 'yoga']
 
-    # dataset_names = ['Coffee']
-    dataset_names = ['HAR']
+    dataset_names = ['Coffee']
+    # dataset_names = ['HAR']
 
     # epsilons = np.arange(start=0.0,stop=2.0,step=0.025,dtype=np.float32)
     epsilons = [0.1]

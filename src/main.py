@@ -60,7 +60,7 @@ def draw(method):
     eps = 0.1
 
     # load attack
-    data_adv_dir = root_dir_attack+method+'/eps-'+str(eps)+'/'
+    data_adv_dir = root_dir_attack+method+'/TSC/train/eps-'+str(eps)+'/'
     file_name_attack = data_adv_dir+dataset_name+'-adv'
     data = np.loadtxt(file_name_attack,delimiter=',')
     x_test_attack = data[:,1:]
@@ -77,12 +77,21 @@ def draw(method):
 
     # number of examples
     n = len(x_test)
+    # print("x_test",n)
     # n_train = len(x_train)
 
     y_train, y_test = transform_labels(y_train, y_test)
+    # print("------------------------------------------------------------summery-----------------------------------")
+    # print(x_test.shape)
+    # print(y_train.shape)
+    # print(y_test.shape)
+    # print("------------------------------------------------------------summery-----------------------------------")
     # load model
     model = keras.models.load_model(dir_model)
+    # print(model.summary())
     # predictions for perturbed instances
+    # print(x_test_attack.shape)
+    # print(x_test_attack.reshape(n, -1, 1).shape)
     y_pred_attack_proba = model.predict(x_test_attack.reshape(n, -1, 1))
     # get labels for perturbed instances
     y_pred_attack = np.argmax(y_pred_attack_proba, axis=1)
@@ -107,7 +116,7 @@ def mds(method):
     eps = 0.1
 
     # load attack
-    data_adv_dir = root_dir_attack + method + '/eps-' + str(eps) + '/'
+    data_adv_dir = root_dir_attack + method + '/TSC/train/eps-' + str(eps) + '/'
     file_name_attack = data_adv_dir+ dataset_name + '-adv'
     data = np.loadtxt(file_name_attack, delimiter=',')
     x_test_attack = data[:, 1:]
@@ -200,7 +209,7 @@ def noise(method):
     eps = 0.1
 
     # load attack
-    data_adv_dir = root_dir_attack + method + '/eps-' + str(eps) + '/'
+    data_adv_dir = root_dir_attack + method + '/TSC/train/eps-' + str(eps) + '/'
     file_name_attack = data_adv_dir + dataset_name + '-adv'
     data = np.loadtxt(file_name_attack, delimiter=',')
     x_test_attack = data[:, 1:]
